@@ -1,5 +1,6 @@
 package at.edu.c02.ledcontroller;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -8,6 +9,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * This class should handle all HTTP communication with the server.
@@ -23,6 +27,19 @@ public class ApiServiceImpl implements ApiService {
      * @return `getLights` response JSON object
      * @throws IOException Throws if the request could not be completed successfully
      */
+
+    private String secret;
+
+    public ApiServiceImpl() {
+        try {
+            Path path = Paths.get("./secret.txt");
+            String content = Files.readString(path);
+            this.secret = content;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public JSONObject getLights() throws IOException
     {
@@ -61,12 +78,12 @@ public class ApiServiceImpl implements ApiService {
         return new JSONObject(jsonText);
     }
 
-    private static BufferedReader getBufferedReader(String urlString) throws IOException {
+    private BufferedReader getBufferedReader(String urlString) throws IOException {
         URL url = new URL(urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         // and send a GET request
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("X-Hasura-Group-ID", "537f4h99kdjd91b785");
+        connection.setRequestProperty("X-Hasura-Group-ID", this.secret);
         // Read the response code
         int responseCode = connection.getResponseCode();
         if(responseCode != HttpURLConnection.HTTP_OK) {
@@ -85,7 +102,7 @@ public class ApiServiceImpl implements ApiService {
         connection.setRequestMethod("PUT");
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("X-Hasura-Group-ID", "537f4h99kdjd91b785");
+        connection.setRequestProperty("X-Hasura-Group-ID", this.secret);
         connection.setDoOutput(true);
         String jsonInputString = String.format("{\"id\": \"%s\", \"color\": \"%s\", \"state\": %s}", led, color, state);
         try(OutputStream os = connection.getOutputStream()) {
@@ -115,8 +132,10 @@ public class ApiServiceImpl implements ApiService {
         }
     }
 
-    public void lauflicht(String color, int durchlauf) throws IOException, InterruptedException{
-        turnAllOff();
+    public void lauflicht(String color, int durchlauf, boolean allOff) throws IOException, InterruptedException{
+        if(allOff){
+            turnAllOff();
+        }
         int[] leds = new int[8];
         for(int i = 0; i < leds.length; i++){
             leds[i] = 20 + i;
@@ -128,8 +147,26 @@ public class ApiServiceImpl implements ApiService {
                 setLed(led, color, false);
             }
         }
-        turnAllOff();
+        if(allOff){
+            turnAllOff();
+        }
+    }
+    public void lauflicht(String color, int durchlauf) throws IOException, InterruptedException{
+        lauflicht(color, durchlauf, true);
+    }
+    public void spinningWheel(int durchlauf) throws IOException, InterruptedException{
+        JSONArray ledsStatus = (JSONArray) getLights().get("lights");
 
+        int[] leds = new int[8];
+        for(int i = 0; i < leds.length; i++){
+            leds[i] = 20 + i;
+        }
+
+        for(int i = 0; i < durchlauf; i++){
+            for(int j = 0; j < leds.length; j++){
+
+            }
+        }
 
     }
 }
