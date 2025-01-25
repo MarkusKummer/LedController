@@ -76,4 +76,8 @@ public class LedControllerImpl implements LedController {
         apiService.lauflicht(color, durchlauf);
     }
 
+    public void spinningWheel(int durchlauf) throws IOException, InterruptedException{
+        apiService.spinningWheel(durchlauf);
+    }
+
 }

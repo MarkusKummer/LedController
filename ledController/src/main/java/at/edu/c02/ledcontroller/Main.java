@@ -23,6 +23,7 @@ public class Main {
             System.out.println("Enter 'setled' turn on led");
             System.out.println("Enter 'alloff' turn all of");
             System.out.println("Enter 'spinningled' turn led on one by one");
+            System.out.println("Enter 'spinningwheel'");
             input = reader.readLine();
             if(input.equalsIgnoreCase("demo"))
             {
@@ -56,6 +57,12 @@ public class Main {
                 input  = reader.readLine();
                 int durchlauf = Integer.parseInt(input);
                 ledController.lauflicht(color, durchlauf);
+            }
+            else if (input.equalsIgnoreCase("spinningwheel")) {
+                System.out.println("How many times?");
+                input  = reader.readLine();
+                int durchlauf = Integer.parseInt(input);
+                ledController.spinningWheel(durchlauf);
             }
         }
     }

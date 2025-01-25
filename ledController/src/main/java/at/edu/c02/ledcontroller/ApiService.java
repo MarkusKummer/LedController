@@ -10,5 +10,6 @@ public interface ApiService {
     void turnAllOff() throws IOException;
     JSONObject getLight(int id) throws IOException;
     void lauflicht(String color, int durchlauf) throws IOException, InterruptedException;
+    void spinningWheel(int durchlauf) throws IOException, InterruptedException;
 
 }

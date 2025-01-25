@@ -9,4 +9,5 @@ public interface LedController {
     void getGroupLeds() throws IOException;
     void getStatus(int id) throws IOException;
     void lauflicht(String color, int durchlauf) throws IOException, InterruptedException;
+    void spinningWheel(int durchlauf) throws IOException, InterruptedException;
 }
