@@ -37,11 +37,7 @@ public class LedControllerImpl implements LedController {
 
     public void getGroupLeds() throws IOException
     {
-        JSONObject allLights = apiService.getLights();
-        if (allLights == null) return;
-        JSONArray array = allLights.getJSONArray("lights");
-
-        if (allLights.isEmpty()) return;
+        JSONArray array = apiService.getGroupLeds();
 
         for (int i = 0; i < array.length(); i++) {
             JSONObject object = array.getJSONObject(i);
@@ -76,6 +72,10 @@ public class LedControllerImpl implements LedController {
     }
     public void lauflicht(String color, int durchlauf) throws IOException, InterruptedException{
         apiService.lauflicht(color, durchlauf);
+    }
+
+    public void spinningWheel(int durchlauf) throws IOException, InterruptedException{
+        apiService.spinningWheel(durchlauf);
     }
 
 }

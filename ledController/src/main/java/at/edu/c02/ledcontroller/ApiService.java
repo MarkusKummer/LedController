@@ -1,5 +1,6 @@
 package at.edu.c02.ledcontroller;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -10,5 +11,7 @@ public interface ApiService {
     void turnAllOff() throws IOException;
     JSONObject getLight(int id) throws IOException;
     void lauflicht(String color, int durchlauf) throws IOException, InterruptedException;
+    void spinningWheel(int durchlauf) throws IOException, InterruptedException;
+    JSONArray getGroupLeds() throws IOException;
 
 }
