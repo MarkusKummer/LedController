@@ -32,8 +32,9 @@ public class ApiServiceImpl implements ApiService {
 
     public ApiServiceImpl() {
         try {
-            Path path = Paths.get("secret.txt");
+            Path path = Paths.get("./ledController/secret.txt");
             String content = Files.readString(path);
+            System.out.println(content);
             this.secret = content;
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,6 +109,8 @@ public class ApiServiceImpl implements ApiService {
         try(OutputStream os = connection.getOutputStream()) {
             byte[] input = jsonInputString.getBytes("utf-8");
             os.write(input, 0, input.length);
+        }catch (Exception e) {
+            return false;
         }
 
         try(BufferedReader br = new BufferedReader(
@@ -118,6 +121,8 @@ public class ApiServiceImpl implements ApiService {
                 response.append(responseLine.trim());
             }
             System.out.println(response.toString());
+        } catch (Exception e) {
+            return false;
         }
         return true;
     }
@@ -134,7 +139,6 @@ public class ApiServiceImpl implements ApiService {
             JSONObject object = array.getJSONObject(i);
             JSONObject objectGroup = object.getJSONObject("groupByGroup");
             if (objectGroup.getString("name").equals("C")) {
-                System.out.println("LED " + object.getInt("id") +  " is currently " + (object.getBoolean("on") ? "on" : "off") + ". Color: " + object.getString("color") + ".");
                 returnArray.put(object);
             }
         }
