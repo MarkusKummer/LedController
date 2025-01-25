@@ -188,11 +188,18 @@ public class ApiServiceImpl implements ApiService {
             leds[i] = 20 + i;
         }
 
-        for(int i = 0; i < durchlauf; i++){
-            for(int j = 0; j < leds.length; j++){
-
+        for(int i = 0; i < durchlauf*leds.length; i++){
+            JSONObject led = onLed.getJSONObject(i%onLed.length());
+            String color = led.getString("color");
+            setLed(i%(leds.length)+20, color, true);
+           Thread.sleep(1000);
+            if(i%(leds.length)+20-2<20){
+                setLed(i%(leds.length)+20+6, color, false);
+            } else {
+                setLed(i%(leds.length)+20-2, color, false);
             }
         }
+        turnAllOff();
 
     }
 }
