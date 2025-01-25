@@ -7,8 +7,7 @@ import org.mockito.internal.matchers.Any;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 
@@ -37,8 +36,8 @@ public class LedControllerTest {
     public void testLedSwitchOn() throws IOException {
         LedController ledController = new LedControllerImpl(new ApiServiceImpl());
 
-        ledController.setLed(24, "#80f", true);
-        assertTrue(ledController.getStatus(24));
+        ledController.setLed(24, "#80f", false);
+        assertFalse(ledController.getStatus(24));
     }
 
     @Test
