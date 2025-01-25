@@ -20,20 +20,22 @@ public class Main {
             System.out.println("Enter 'groupstatus' to show led state");
             System.out.println("Enter 'status' to show led state for specific led");
             System.out.println("Enter 'exit' to exit the program");
-            System.out.println("Enter 'on' to exit the program");
-            System.out.println("Enter 'alloff' to exit the program");
-            System.out.println("Enter 'lauflicht' to exit the program");
+            System.out.println("Enter 'setled' turn on led");
+            System.out.println("Enter 'alloff' turn all of");
+            System.out.println("Enter 'spinningled' turn led on one by one");
             input = reader.readLine();
             if(input.equalsIgnoreCase("demo"))
             {
                 ledController.demo();
             }
-            else if(input.equalsIgnoreCase("on"))
+            else if(input.equalsIgnoreCase("setled"))
             {
-                System.out.println("Please specify LED ID:");
+                System.out.println("Which LED:");
                 input = reader.readLine();
                 int led = Integer.parseInt(input);
-                ledController.setLed(led, "#0f0", true);
+                System.out.println("Which color:");
+                String color = reader.readLine();
+                ledController.setLed(led, color, true);
             }
             else if(input.equalsIgnoreCase("alloff"))
             {
@@ -47,10 +49,10 @@ public class Main {
                 input = reader.readLine();
                 ledController.getStatus(Integer.parseInt(input));
             }
-            else if (input.equalsIgnoreCase("lauflicht")) {
-                System.out.println("Please specify LED color:");
+            else if (input.equalsIgnoreCase("spinningled")) {
+                System.out.println("Which color?");
                 String color = reader.readLine();
-                System.out.println("Please specify Durchlauf:");
+                System.out.println("How many turns?");
                 input  = reader.readLine();
                 int durchlauf = Integer.parseInt(input);
                 ledController.lauflicht(color, durchlauf);
