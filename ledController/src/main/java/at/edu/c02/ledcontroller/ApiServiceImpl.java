@@ -32,7 +32,7 @@ public class ApiServiceImpl implements ApiService {
 
     public ApiServiceImpl() {
         try {
-            Path path = Paths.get("./secret.txt");
+            Path path = Paths.get("secret.txt");
             String content = Files.readString(path);
             this.secret = content;
         } catch (IOException e) {
@@ -121,6 +121,26 @@ public class ApiServiceImpl implements ApiService {
         }
         return true;
     }
+    public JSONArray getGroupLeds() throws IOException
+    {
+        JSONObject allLights = getLights();
+        if (allLights == null) return null;
+        JSONArray array = allLights.getJSONArray("lights");
+
+        if (allLights.isEmpty()) return null;
+
+        JSONArray returnArray = new JSONArray();
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject object = array.getJSONObject(i);
+            JSONObject objectGroup = object.getJSONObject("groupByGroup");
+            if (objectGroup.getString("name").equals("C")) {
+                System.out.println("LED " + object.getInt("id") +  " is currently " + (object.getBoolean("on") ? "on" : "off") + ". Color: " + object.getString("color") + ".");
+                returnArray.put(object);
+            }
+        }
+        return returnArray;
+
+    }
 
     public void turnAllOff() throws IOException{
         int[] leds = new int[8];
@@ -132,10 +152,9 @@ public class ApiServiceImpl implements ApiService {
         }
     }
 
-    public void lauflicht(String color, int durchlauf, boolean allOff) throws IOException, InterruptedException{
-        if(allOff){
-            turnAllOff();
-        }
+    public void lauflicht(String color, int durchlauf) throws IOException, InterruptedException{
+
+        turnAllOff();
         int[] leds = new int[8];
         for(int i = 0; i < leds.length; i++){
             leds[i] = 20 + i;
@@ -147,15 +166,18 @@ public class ApiServiceImpl implements ApiService {
                 setLed(led, color, false);
             }
         }
-        if(allOff){
-            turnAllOff();
-        }
+        turnAllOff();
     }
-    public void lauflicht(String color, int durchlauf) throws IOException, InterruptedException{
-        lauflicht(color, durchlauf, true);
-    }
+
     public void spinningWheel(int durchlauf) throws IOException, InterruptedException{
-        JSONArray ledsStatus = (JSONArray) getLights().get("lights");
+        JSONArray ledsStatus = getGroupLeds();
+        JSONArray onLed= new JSONArray();
+        for(int i = 0; i < ledsStatus.length(); i++){
+            JSONObject led = ledsStatus.getJSONObject(i);
+            if(led.getBoolean("on")){
+                onLed.put(led);
+            }
+        }
 
         int[] leds = new int[8];
         for(int i = 0; i < leds.length; i++){

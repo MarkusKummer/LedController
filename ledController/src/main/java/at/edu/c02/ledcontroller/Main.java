@@ -19,11 +19,11 @@ public class Main {
             System.out.println("Enter 'demo' to send a demo request");
             System.out.println("Enter 'groupstatus' to show led state");
             System.out.println("Enter 'status' to show led state for specific led");
-            System.out.println("Enter 'exit' to exit the program");
             System.out.println("Enter 'setled' turn on led");
             System.out.println("Enter 'alloff' turn all of");
             System.out.println("Enter 'spinningled' turn led on one by one");
             System.out.println("Enter 'spinningwheel'");
+            System.out.println("Enter 'exit' to exit the program");
             input = reader.readLine();
             if(input.equalsIgnoreCase("demo"))
             {

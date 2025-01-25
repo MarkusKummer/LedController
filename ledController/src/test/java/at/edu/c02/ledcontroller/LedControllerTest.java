@@ -2,6 +2,8 @@ package at.edu.c02.ledcontroller;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.mockito.internal.matchers.Any;
 
 import java.io.IOException;
@@ -50,13 +52,20 @@ public class LedControllerTest {
     }
 
     @Test
-    public void testLauflicht() throws IOException, InterruptedException {
-        /*ApiService apiService = mock(ApiService.class);
-        LedController ledController = new LedControllerImpl(apiService);
+    public void testLauflicht() throws Exception {
+        // "Echte" Instanz
+        ApiServiceImpl realService = new ApiServiceImpl();
+        // Spy darauf erstellen
+        ApiServiceImpl spyService = Mockito.spy(realService);
+        // Methoden stubbing:
+        doReturn(true).when(spyService).setLed(anyInt(), anyString(), anyBoolean());
 
-        ledController.lauflicht("#80f", 8);
-        verify(apiService).setLed(anyInt(), anyString(), anyBoolean());*/
+        // Jetzt dein eigentlicher Aufruf
+        spyService.lauflicht("#FF0000", 2);
+
+        // Verifications
+        verify(spyService, times(2)).turnAllOff();
+        verify(spyService, times(48)).setLed(anyInt(), anyString(), anyBoolean());
     }
-
 
 }
